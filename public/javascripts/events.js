@@ -60,9 +60,7 @@ $(function() {
       });
     },
     delete: function(id) {
-      var item = this.collection.find(function(event) {
-        return event.id === id;
-      });
+      var item = _(this.collection).findWhere({ id: id });
       var index = this.collection.indexOf(item);
 
       this.collection.splice(index, 1);
