@@ -48,16 +48,13 @@ $(function() {
     remove: function(e) {
       e.preventDefault();
       var id = $(e.target).closest('li').data('id');
-      var self = this;
 
       $.ajax({
         url: '/events/delete',
         type: 'post',
-        data: 'id=' + id,
-        success: function() {
-          self.delete(id);
-        }
+        data: 'id=' + id
       });
+      this.delete(id);
     },
     delete: function(id) {
       var item = _(this.collection).findWhere({ id: id });
