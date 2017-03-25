@@ -26,7 +26,7 @@ $(function() {
         return input.value.length;
       });
     },
-    add: function(e) {
+    new: function(e) {
       e.preventDefault();
       var $form = $(e.target);
       var self = this;
@@ -37,16 +37,25 @@ $(function() {
         type: $form.attr('method'),
         data: $form.serialize(),
         success: function(event) {
-          self.collection.push(event);
-          self.render();
+          self.add(event);
         }
+      });
+    },
+    add: function(event) {
+      this.collection.push(event);
+      this.sort();
+      this.render();
+    },
+    sort: function() {
+      this.collection = this.collection.sort(function(a, b) {
+        return a.date > b.date;
       });
     },
     render: function() {
       this.$el.html(this.eventsTemplate({events: this.collection}));
     },
     bindEvents: function() {
-      $('form').on('submit', this.add.bind(this));
+      $('form').on('submit', this.new.bind(this));
     },
     init: function() {
       this.cacheTemplates();
