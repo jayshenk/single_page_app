@@ -70,7 +70,9 @@ $(function() {
     },
     sort: function() {
       this.collection = this.collection.sort(function(a, b) {
-        return a.date > b.date;
+        if (a.date < b.date) { return -1; }
+        if (a.date > b.date) { return 1; }
+        return 0;
       });
     },
     render: function() {
