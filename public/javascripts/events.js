@@ -43,7 +43,29 @@ $(function() {
     },
     add: function(event) {
       this.collection.push(event);
-      this.sort();
+      this.render();
+    },
+    remove: function(e) {
+      e.preventDefault();
+      var id = $(e.target).closest('li').data('id');
+      var self = this;
+
+      $.ajax({
+        url: '/events/delete',
+        type: 'post',
+        data: 'id=' + id,
+        success: function() {
+          self.delete(id);
+        }
+      });
+    },
+    delete: function(id) {
+      var item = this.collection.find(function(event) {
+        return event.id === id;
+      });
+      var index = this.collection.indexOf(item);
+
+      this.collection.splice(index, 1);
       this.render();
     },
     sort: function() {
@@ -52,10 +74,12 @@ $(function() {
       });
     },
     render: function() {
+      this.sort();
       this.$el.html(this.eventsTemplate({events: this.collection}));
     },
     bindEvents: function() {
       $('form').on('submit', this.new.bind(this));
+      this.$el.on('click', 'a.remove', this.remove.bind(this));
     },
     init: function() {
       this.cacheTemplates();
